@@ -368,7 +368,14 @@ findLongestWord('The quick brown fox');
  *   reverseWords('Hello World') => 'olleH dlroW'
  *   reverseWords('The Quick Brown Fox') => 'ehT kciuQ nworB xoF'
  */
-function reverseWords(/* str */) {}
+function reverseWords(str) {
+  return str
+    .split(' ')
+    .forEach((word) => {
+      return word.split('').reverse().join('');
+    })
+    .join(' ');
+}
 
 /**
  * Inverts the case of each character in the given string.
