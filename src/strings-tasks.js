@@ -41,10 +41,7 @@ function getStringLength(value) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-  if (typeof value.valueOf() !== 'string') {
-    return false;
-  }
-  return true;
+  return typeof value === 'string' || value instanceof String;
 }
 
 /**
@@ -171,7 +168,13 @@ function removeFirstOccurrences(str, value) {
  *   removeLastOccurrences('I like legends', 'end') => 'I like legs'.
  *   removeLastOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
-function removeLastOccurrences(/* str, value */) {}
+function removeLastOccurrences(str, value) {
+  const lastInd = str.lastIndexOf(value);
+  if (lastInd !== -1) {
+    return str.slice(0, lastInd) + str.slice(lastInd + value.length);
+  }
+  return str;
+}
 
 /**
  * Calculate the sum of character codes of the given string.
@@ -185,8 +188,13 @@ function removeLastOccurrences(/* str, value */) {}
  *   sumOfCodes('') => 0
  *   sumOfCodes() => 0
  */
-function sumOfCodes(/* str */) {}
-
+function sumOfCodes(str) {
+  return typeof str === 'string'
+    ? str.split('').reduce((a, b, i) => {
+        return a + str.charCodeAt(i);
+      }, 0)
+    : 0;
+}
 /**
  * Checks if a string starts with a specific substring.
  *
@@ -198,7 +206,9 @@ function sumOfCodes(/* str */) {}
  *   startsWith('Hello World', 'World') => false
  *   startsWith('Hello World', 'Hello') => true
  */
-function startsWith(/* str, substr */) {}
+function startsWith(str, substr) {
+  return typeof str === 'string' ? str.startsWith(substr) : false;
+}
 
 /**
  * Checks if a string ends with a specific substring.
@@ -211,7 +221,9 @@ function startsWith(/* str, substr */) {}
  *   endsWith('Hello World', 'World') => true
  *   endsWith('Hello World', 'Hello') => false
  */
-function endsWith(/* str, substr */) {}
+function endsWith(str, substr) {
+  return typeof str === 'string' ? str.endsWith(substr) : false;
+}
 
 /**
  * Returns a time string in the "mm:ss" format.
@@ -226,7 +238,9 @@ function endsWith(/* str, substr */) {}
  *   formatTime(0, 45) => "00:45"
  *   formatTime(0, 0) => "00:00"
  */
-function formatTime(/* minutes, seconds */) {}
+function formatTime(minutes, seconds) {
+  return `${String(minutes).padStart(2, 0)}:${String(seconds).padStart(2, 0)}`;
+}
 
 /**
  * Returns a string in reverse order.
@@ -238,7 +252,9 @@ function formatTime(/* minutes, seconds */) {}
  *   reverseString('abcdef') => 'fedcba'
  *   reverseString('12345') => '54321'
  */
-function reverseString(/* str */) {}
+function reverseString(str) {
+  return str.split('').reverse().join('');
+}
 
 /**
  * Returns a string with characters in alphabetical order.
@@ -251,7 +267,9 @@ function reverseString(/* str */) {}
  *   orderAlphabetically('textbook') => 'bekoottx'
  *   orderAlphabetically('abc123xyz') => '123abcxyz'
  */
-function orderAlphabetically(/* str */) {}
+function orderAlphabetically(str) {
+  return str.split('').sort().join('');
+}
 
 /**
  * Checks if a given string contains a specified substring.
@@ -265,7 +283,9 @@ function orderAlphabetically(/* str */) {}
  *   containsSubstring('JavaScript is Fun', 'Python') => false
  *   containsSubstring('12345', '34') => true
  */
-function containsSubstring(/* str, substring */) {}
+function containsSubstring(str, substring) {
+  return str.includes(substring);
+}
 
 /**
  * Returns the number of vowels in the string.
@@ -281,7 +301,16 @@ function containsSubstring(/* str, substring */) {}
  *   countVowels('aEiOu') => 5
  *   countVowels('XYZ') => 1
  */
-function countVowels(/* str */) {}
+function countVowels(str) {
+  const vowels = ['a', 'e', 'i', 'o', 'u', 'y', 'A', 'E', 'I', 'O', 'U', 'Y'];
+  let count = 0;
+  str.split('').forEach((letter) => {
+    if (vowels.includes(letter)) {
+      count += 1;
+    }
+  });
+  return count;
+}
 
 /**
  * Returns true if the string is a palindrome; otherwise false.
@@ -296,7 +325,18 @@ function countVowels(/* str */) {}
  *   isPalindrome('apple') => false
  *   isPalindrome('No lemon, no melon') => true
  */
-function isPalindrome(/* str */) {}
+function isPalindrome(str) {
+  const re = /[\W_]/g;
+  const lowRgstr = str.toLowerCase().replace(re, '');
+  const reverseStr = str
+    .replace(re, '')
+    .split('')
+    .reverse()
+    .join('')
+    .toLowerCase();
+  return lowRgstr === reverseStr;
+}
+isPalindrome('No lemon, no melon');
 
 /**
  * Find the longest word in the sentence. If there are multiple longest words,
@@ -310,7 +350,13 @@ function isPalindrome(/* str */) {}
  *   findLongestWord('A long and winding road') => 'winding'
  *   findLongestWord('No words here') => 'words'
  */
-function findLongestWord(/* sentence */) {}
+function findLongestWord(sentence) {
+  const longWord = sentence.split(' ').reduce((longest, curr) => {
+    return longest.length >= curr.length ? longest : curr;
+  }, '');
+  return longWord;
+}
+findLongestWord('The quick brown fox');
 
 /**
  * Returns the string where each word is reversed.
